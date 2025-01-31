@@ -1,0 +1,85 @@
+<html onmousemove="movegravity(event)">
+    <body>
+        <select id="selectstrength">
+            <option disabled hidden selected>Strength 3</option>
+            <option>Strength 1</option>
+            <option>Strength 2</option>
+            <option>Strength 3</option>
+            <option>Strength 4</option>
+            <option>Strength 5</option>
+            <option>Strength 6</option>
+            <option>Strength 7</option>
+            <option>Strength 8</option>
+            <option>Strength 9</option>
+        </select>
+        <select id="directionselect">
+            <option>Down</option>
+            <option>Up</option>
+        </select>
+        <p>Gravity is a force of motion that pulls objects towards a large object of mass.</p>
+        <div id="gravityball" onmousedown="clicked = true; clearInterval(interval)" onmouseup="clicked = false; interval = setInterval(fall, delay, strength)"></div>
+        <style>
+            #gravityball {
+                background-color: pink;
+                height: 25px;
+                width: 25px;
+                border-radius: 100%;
+            }
+            html {
+                overflow: hidden;
+            }
+        </style>
+        <script>
+            var gravityball = document.getElementById("gravityball")
+            var selectstrength = document.getElementById("selectstrength")
+            let i = 0
+            let strength = 3
+            let delay = 15
+            let clicked = false
+            
+            function movegravity(event) {
+                if (clicked) {
+                    let x = event.clientX
+                    let y = event.clientY
+                    
+                    i = y - 45
+                    gravityball.style.marginTop = i + 'px'
+                    gravityball.style.marginLeft = (x - 25) + 'px'
+                }
+            }
+            
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms))
+            }
+            
+            function fall(amount) {
+                if (directionselect.selectedIndex == 0) {
+                    if (i <= window.innerHeight - 90) {
+                        i += amount
+                        gravityball.style.marginTop = i + 'px'
+                    } else {
+                        
+                    }
+                } else if (directionselect.selectedIndex == 1) {
+                    if (i >= 0) {
+                        i -= amount
+                        gravityball.style.marginTop = i + 'px'
+                    } else {
+                        
+                    }
+                }
+            }
+            
+            var interval = setInterval(fall, delay, strength)
+            
+            selectstrength.addEventListener("change", function() {
+                clearInterval(interval)
+                strength = selectstrength.selectedIndex
+                i = 0
+                gravityball.style.marginTop = 0
+                gravityball.style.marginLeft = 0
+                interval = setInterval(fall, delay, strength)
+            })
+        </script>
+    </body>
+</html>
